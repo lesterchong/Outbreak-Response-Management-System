@@ -3,6 +3,9 @@ package org.apache.jsp.AddPages;
 import javax.servlet.*;
 import javax.servlet.http.*;
 import javax.servlet.jsp.*;
+import MODEL.AdmittanceModel;
+import java.util.LinkedList;
+import DAO.AdmittanceDAO;
 
 public final class AddDischarge_jsp extends org.apache.jasper.runtime.HttpJspBase
     implements org.apache.jasper.runtime.JspSourceDependent {
@@ -44,6 +47,9 @@ public final class AddDischarge_jsp extends org.apache.jasper.runtime.HttpJspBas
       out.write("\n");
       out.write("\n");
       out.write("\n");
+      out.write("\n");
+      out.write("\n");
+      out.write("\n");
       out.write("<!DOCTYPE html>\n");
       out.write("<html>\n");
       out.write("    <head>\n");
@@ -51,18 +57,24 @@ public final class AddDischarge_jsp extends org.apache.jasper.runtime.HttpJspBas
       out.write("        <title>Discharge </title>\n");
       out.write("    </head>\n");
       out.write("    <body>\n");
+      out.write("        ");
+
+            AdmittanceDAO dao = new AdmittanceDAO();
+            LinkedList<AdmittanceModel> list = dao.getAdmittances();
+        
+      out.write("\n");
       out.write("        <form action=\"AddDischargeServlet\" method=\"POST\">\n");
-      out.write("            First Name: <input type=\"text\" name=\"firstName\"/>\n");
-      out.write("            <br>\n");
-      out.write("            Last Name: <input type=\"text\" name=\"lastName\"/>\n");
-      out.write("            <br>\n");
-      out.write("            Attending Physician: <input type=\"text\" name=\"attendingPhysician\"/>\n");
+      out.write("            Patient: <select name=\"patient\">\n");
+      out.write("                ");
+
+                    for(int ctr=0; ctr<list.size(); ctr++){
+                        out.println("<option value="+list.get(ctr).getAdmittanceID()+">"+list.get(ctr).getLastName()+","+list.get(ctr).getFirstName()+"</option>");
+                    }
+                
+      out.write("\n");
+      out.write("            </select>\n");
       out.write("            <br>\n");
       out.write("            Room Number: <input type=\"number\" name=\"roomNumber\"/>\n");
-      out.write("            <br>\n");
-      out.write("            Patient Number: <input type=\"number\" name=\"patientNumber\"/>\n");
-      out.write("            <br>\n");
-      out.write("            Date of Admission: <input type=\"date\" name=\"dateOfAdmission\"/>\n");
       out.write("            <br>\n");
       out.write("            Date of Discharge: <input type=\"date\" name=\"dateOfDischarge\"/>\n");
       out.write("            <br>\n");
@@ -81,8 +93,6 @@ public final class AddDischarge_jsp extends org.apache.jasper.runtime.HttpJspBas
       out.write("            Rehabilitation Potential: <input type=\"text\" name=\"rehabPotential\"/>\n");
       out.write("            <br>\n");
       out.write("            Follow-up and Discharge Medication: <input type=\"text\" name=\"followUp\"/>\n");
-      out.write("            <br>\n");
-      out.write("            Date: <input type=\"date\" name=\"dateFiled\"/>\n");
       out.write("            <br>\n");
       out.write("            Approved By: <input type=\"text\" name=\"approvedBy\"/>\n");
       out.write("            <br>\n");

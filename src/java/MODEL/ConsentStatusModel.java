@@ -14,11 +14,11 @@ public class ConsentStatusModel {
     private int consentStatusID;
     private String consentStatus;
     private String legalGuardian;
-    private int guardianNumber;
+    private long guardianNumber;
     private String decisionMaker;
-    private int decisionNumber;
+    private long decisionNumber;
     private String medicalPOA;
-    private int medicalNumber;
+    private long medicalNumber;
 
     /**
      * @return the consentStatusID
@@ -65,14 +65,14 @@ public class ConsentStatusModel {
     /**
      * @return the guardianNumber
      */
-    public int getGuardianNumber() {
+    public long getGuardianNumber() {
         return guardianNumber;
     }
 
     /**
      * @param guardianNumber the guardianNumber to set
      */
-    public void setGuardianNumber(int guardianNumber) {
+    public void setGuardianNumber(long guardianNumber) {
         this.guardianNumber = guardianNumber;
     }
 
@@ -93,14 +93,14 @@ public class ConsentStatusModel {
     /**
      * @return the decisionNumber
      */
-    public int getDecisionNumber() {
+    public long getDecisionNumber() {
         return decisionNumber;
     }
 
     /**
      * @param decisionNumber the decisionNumber to set
      */
-    public void setDecisionNumber(int decisionNumber) {
+    public void setDecisionNumber(long decisionNumber) {
         this.decisionNumber = decisionNumber;
     }
 
@@ -121,14 +121,14 @@ public class ConsentStatusModel {
     /**
      * @return the medicalNumber
      */
-    public int getMedicalNumber() {
+    public long getMedicalNumber() {
         return medicalNumber;
     }
 
     /**
      * @param medicalNumber the medicalNumber to set
      */
-    public void setMedicalNumber(int medicalNumber) {
+    public void setMedicalNumber(long medicalNumber) {
         this.medicalNumber = medicalNumber;
     }
 }

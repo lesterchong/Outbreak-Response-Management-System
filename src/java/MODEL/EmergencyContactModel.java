@@ -14,8 +14,8 @@ public class EmergencyContactModel {
     private int emergencyContactID;
     private String firstName;
     private String lastName;
-    private int primaryPhoneNumber;
-    private int secondaryPhoneNumber;
+    private long primaryPhoneNumber;
+    private long secondaryPhoneNumber;
     private String relationship;
 
     /**
@@ -63,28 +63,28 @@ public class EmergencyContactModel {
     /**
      * @return the primaryPhoneNumber
      */
-    public int getPrimaryPhoneNumber() {
+    public long getPrimaryPhoneNumber() {
         return primaryPhoneNumber;
     }
 
     /**
      * @param primaryPhoneNumber the primaryPhoneNumber to set
      */
-    public void setPrimaryPhoneNumber(int primaryPhoneNumber) {
+    public void setPrimaryPhoneNumber(long primaryPhoneNumber) {
         this.primaryPhoneNumber = primaryPhoneNumber;
     }
 
     /**
      * @return the secondaryPhoneNumber
      */
-    public int getSecondaryPhoneNumber() {
+    public long getSecondaryPhoneNumber() {
         return secondaryPhoneNumber;
     }
 
     /**
      * @param secondaryPhoneNumber the secondaryPhoneNumber to set
      */
-    public void setSecondaryPhoneNumber(int secondaryPhoneNumber) {
+    public void setSecondaryPhoneNumber(long secondaryPhoneNumber) {
         this.secondaryPhoneNumber = secondaryPhoneNumber;
     }
 

@@ -4,6 +4,9 @@
     Author     : Lester Chong
 --%>
 
+<%@page import="MODEL.AdmittanceModel"%>
+<%@page import="java.util.LinkedList"%>
+<%@page import="DAO.AdmittanceDAO"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -12,18 +15,20 @@
         <title>Discharge </title>
     </head>
     <body>
+        <%
+            AdmittanceDAO dao = new AdmittanceDAO();
+            LinkedList<AdmittanceModel> list = dao.getAdmittances();
+        %>
         <form action="AddDischargeServlet" method="POST">
-            First Name: <input type="text" name="firstName"/>
-            <br>
-            Last Name: <input type="text" name="lastName"/>
-            <br>
-            Attending Physician: <input type="text" name="attendingPhysician"/>
+            Patient: <select name="patient">
+                <%
+                    for(int ctr=0; ctr<list.size(); ctr++){
+                        out.println("<option value="+list.get(ctr).getAdmittanceID()+">"+list.get(ctr).getLastName()+","+list.get(ctr).getFirstName()+"</option>");
+                    }
+                %>
+            </select>
             <br>
             Room Number: <input type="number" name="roomNumber"/>
-            <br>
-            Patient Number: <input type="number" name="patientNumber"/>
-            <br>
-            Date of Admission: <input type="date" name="dateOfAdmission"/>
             <br>
             Date of Discharge: <input type="date" name="dateOfDischarge"/>
             <br>
@@ -42,8 +47,6 @@
             Rehabilitation Potential: <input type="text" name="rehabPotential"/>
             <br>
             Follow-up and Discharge Medication: <input type="text" name="followUp"/>
-            <br>
-            Date: <input type="date" name="dateFiled"/>
             <br>
             Approved By: <input type="text" name="approvedBy"/>
             <br>

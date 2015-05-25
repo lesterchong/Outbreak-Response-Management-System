@@ -19,14 +19,14 @@ public class AdmittanceModel {
     private String firstName;
     private String nickName;
     private Date dateOfBirth;
-    private int socialSecurityNumber;
-    private int phoneNumber;
+    private long socialSecurityNumber;
+    private long phoneNumber;
     private String civilStatus;
     private int age;
     private int insuranceType;
     private int insuranceNumber;
     private String primaryDoctor;
-    private int doctorPhoneNumber;
+    private long doctorPhoneNumber;
     private int dengueLevel;
     private ConsentStatusModel consentStatus;
     private int releaseInfo;
@@ -110,28 +110,28 @@ public class AdmittanceModel {
     /**
      * @return the socialSecurityNumber
      */
-    public int getSocialSecurityNumber() {
+    public long getSocialSecurityNumber() {
         return socialSecurityNumber;
     }
 
     /**
      * @param socialSecurityNumber the socialSecurityNumber to set
      */
-    public void setSocialSecurityNumber(int socialSecurityNumber) {
+    public void setSocialSecurityNumber(long socialSecurityNumber) {
         this.socialSecurityNumber = socialSecurityNumber;
     }
 
     /**
      * @return the phoneNumber
      */
-    public int getPhoneNumber() {
+    public long getPhoneNumber() {
         return phoneNumber;
     }
 
     /**
      * @param phoneNumber the phoneNumber to set
      */
-    public void setPhoneNumber(int phoneNumber) {
+    public void setPhoneNumber(long phoneNumber) {
         this.phoneNumber = phoneNumber;
     }
 
@@ -208,14 +208,14 @@ public class AdmittanceModel {
     /**
      * @return the doctorPhoneNumber
      */
-    public int getDoctorPhoneNumber() {
+    public long getDoctorPhoneNumber() {
         return doctorPhoneNumber;
     }
 
     /**
      * @param doctorPhoneNumber the doctorPhoneNumber to set
      */
-    public void setDoctorPhoneNumber(int doctorPhoneNumber) {
+    public void setDoctorPhoneNumber(long doctorPhoneNumber) {
         this.doctorPhoneNumber = doctorPhoneNumber;
     }
 

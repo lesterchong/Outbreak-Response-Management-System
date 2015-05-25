@@ -34,7 +34,7 @@ public class UserDAO {
             ps = con.prepareStatement("INSERT INTO USER(username, password, contactNumber, privilegeID, hospitalID) VALUES(?, ?, ?, ?, ?)");
             ps.setString(1, user.getUsername());
             ps.setString(2, hashPassword(user.getPassword()));
-            ps.setInt(3, user.getContactNumber());
+            ps.setInt(3, (int)user.getContactNumber());
             ps.setString(4, user.getPrivilegeType());
             ps.setInt(5, Integer.parseInt(user.getHospital()));
             ps.executeUpdate();

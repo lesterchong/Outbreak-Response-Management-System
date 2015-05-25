@@ -43,12 +43,12 @@ public class AddDischargeServlet extends HttpServlet {
             RequestDispatcher rd = getServletContext().getRequestDispatcher(null);
             
             try{
-                model.setFirstName(request.getParameter("firstName"));
-                model.setLastName(request.getParameter("lastName"));
-                model.setAttendingPhysician(request.getParameter("attendingPhysician"));
+                model.setFirstName(request.getParameter("firstName")); //Provided in admittance
+                model.setLastName(request.getParameter("lastName")); //Provided in admittance
+                model.setAttendingPhysician(request.getParameter("attendingPhysician")); //Provided in admittance
                 model.setRoomNumber(Integer.parseInt(request.getParameter("roomNumber")));
-                model.setPatientNumber(Integer.parseInt(request.getParameter("patientNumber")));
-                model.setDateOfAdmission(new java.sql.Date(sd.parse(request.getParameter("dateOfAdmission")).getTime()));
+                model.setPatientNumber(Integer.parseInt(request.getParameter("patientNumber"))); //Provided in admittance
+                model.setDateOfAdmission(new java.sql.Date(sd.parse(request.getParameter("dateOfAdmission")).getTime())); //Provided in admittance
                 model.setDateOfDischarge(new java.sql.Date(sd.parse(request.getParameter("dateOfDischarge")).getTime()));
                 model.setProvisionalDiagnosis(request.getParameter("provisionalDiagnosis"));
                 model.setFinalDiagnosis(request.getParameter("finalDiagnosis"));

@@ -15,7 +15,7 @@ public class UserModel {
     private String username;
     private String password;
     private String privilegeType;
-    private int contactNumber;
+    private long contactNumber;
     private String hospital;
     
     /**
@@ -63,14 +63,14 @@ public class UserModel {
     /**
      * @return the contactNumber
      */
-    public int getContactNumber() {
+    public long getContactNumber() {
         return contactNumber;
     }
 
     /**
      * @param contactNumber the contactNumber to set
      */
-    public void setContactNumber(int contactNumber) {
+    public void setContactNumber(long contactNumber) {
         this.contactNumber = contactNumber;
     }
 

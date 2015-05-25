@@ -13,7 +13,7 @@ package MODEL;
 public class ReferenceModel {
     private int referenceID;
     private String referenceName;
-    private int contactNumber;
+    private long contactNumber;
 
     /**
      * @return the referenceID
@@ -46,14 +46,14 @@ public class ReferenceModel {
     /**
      * @return the contactNumber
      */
-    public int getContactNumber() {
+    public long getContactNumber() {
         return contactNumber;
     }
 
     /**
      * @param contactNumber the contactNumber to set
      */
-    public void setContactNumber(int contactNumber) {
+    public void setContactNumber(long contactNumber) {
         this.contactNumber = contactNumber;
     }
     
