@@ -36,6 +36,7 @@ public class AdmittanceModel {
     private LinkedList<String> allergies;
     private LinkedList<EmergencyContactModel> emergencyContact;
     private String hospital;
+    private Date dateFiled;
 
     /**
      * @return the admittanceID
@@ -343,5 +344,19 @@ public class AdmittanceModel {
      */
     public void setHospital(String hospital) {
         this.hospital = hospital;
+    }
+
+    /**
+     * @return the dateFiled
+     */
+    public Date getDateFiled() {
+        return dateFiled;
+    }
+
+    /**
+     * @param dateFiled the dateFiled to set
+     */
+    public void setDateFiled(Date dateFiled) {
+        this.dateFiled = dateFiled;
     }
 }

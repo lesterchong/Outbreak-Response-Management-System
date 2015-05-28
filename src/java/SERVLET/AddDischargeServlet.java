@@ -6,7 +6,9 @@
 
 package SERVLET;
 
+import DAO.AdmittanceDAO;
 import DAO.DischargeDAO;
+import MODEL.AdmittanceModel;
 import MODEL.DischargeModel;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -39,16 +41,19 @@ public class AddDischargeServlet extends HttpServlet {
         try (PrintWriter out = response.getWriter()) {
             DischargeDAO dao = new DischargeDAO();
             DischargeModel model = new DischargeModel();
+            AdmittanceModel adModel;
+            AdmittanceDAO adDao = new AdmittanceDAO();
             SimpleDateFormat sd = new SimpleDateFormat();
             RequestDispatcher rd = getServletContext().getRequestDispatcher(null);
             
             try{
-                model.setFirstName(request.getParameter("firstName")); //Provided in admittance
-                model.setLastName(request.getParameter("lastName")); //Provided in admittance
-                model.setAttendingPhysician(request.getParameter("attendingPhysician")); //Provided in admittance
+                adModel = adDao.getAdmittanceByID(0);
+                model.setFirstName(adModel.getFirstName()); //Provided in admittance
+                model.setLastName(adModel.getLastName()); //Provided in admittance
+                model.setAttendingPhysician(adModel.getPrimaryDoctor()); //Provided in admittance
                 model.setRoomNumber(Integer.parseInt(request.getParameter("roomNumber")));
-                model.setPatientNumber(Integer.parseInt(request.getParameter("patientNumber"))); //Provided in admittance
-                model.setDateOfAdmission(new java.sql.Date(sd.parse(request.getParameter("dateOfAdmission")).getTime())); //Provided in admittance
+                model.setPatientNumber(adModel.getAdmittanceID()); //Provided in admittance
+                model.setDateOfAdmission(adModel.getDateFiled()); //Provided in admittance
                 model.setDateOfDischarge(new java.sql.Date(sd.parse(request.getParameter("dateOfDischarge")).getTime()));
                 model.setProvisionalDiagnosis(request.getParameter("provisionalDiagnosis"));
                 model.setFinalDiagnosis(request.getParameter("finalDiagnosis"));
@@ -60,6 +65,8 @@ public class AddDischargeServlet extends HttpServlet {
                 model.setFollowUp(request.getParameter("followUp"));
                 model.setDateFiled(new java.sql.Date(new java.util.Date().getTime()));
                 model.setApprovedBy(request.getParameter("approvedBy"));
+                
+                model.setHospitalID(0);
                 
                 if(dao.addDischarge(model)){
                     out.printf("<script>alert(\"Successfully Updated\")</script>");

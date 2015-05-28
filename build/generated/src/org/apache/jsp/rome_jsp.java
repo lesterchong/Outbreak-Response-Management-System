@@ -58,7 +58,7 @@ public final class rome_jsp extends org.apache.jasper.runtime.HttpJspBase
             System.out.println(request.getSession().getAttribute("hospitalID"));
         
       out.write("\n");
-      out.write("        <form action=\"POST\" method=\"UserLogoutServlet\">\n");
+      out.write("        <form action=\"UserLogoutServlet\" method=\"POST\">\n");
       out.write("            <button type=\"submit\"/>Log out\n");
       out.write("        </form>\n");
       out.write("    </body>\n");

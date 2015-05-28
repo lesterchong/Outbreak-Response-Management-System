@@ -67,6 +67,7 @@ public class AddAdmittanceServlet extends HttpServlet {
             model.setPrimaryDoctor(request.getParameter("primaryDoctor"));
             model.setDoctorPhoneNumber(Integer.parseInt(request.getParameter("doctorNumber")));
             model.setDengueLevel(Integer.parseInt(request.getParameter("dengueLevel")));
+            model.setDateFiled(new java.sql.Date(new java.util.Date().getTime()));
             
             model.setEmergencyContact(emergencyContacts);
             

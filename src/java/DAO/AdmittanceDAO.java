@@ -125,7 +125,7 @@ public class AdmittanceDAO {
         try{
             cf = new ConcreteConnection();
             con = cf.getConnection();
-            ps = con.prepareStatement("INSERT INTO admittance(firstName, lastName, nickName, dateOfBirth, socialSecurityNumber, phoneNumber, civilStatusID, age, insuranceType, insuranceNumber, primaryDoctor, doctorPhoneNumber, dengueLevel, releaseInfo, incidentReport, incidentLocation, barangayID, hospitalID) VALUES(?, ? , ?, ?, ?, ?, ? , ?, ?, ?, ?, ? , ?, ?, ?, ?, ?, ?)");
+            ps = con.prepareStatement("INSERT INTO admittance(firstName, lastName, nickName, dateOfBirth, socialSecurityNumber, phoneNumber, civilStatusID, age, insuranceType, insuranceNumber, primaryDoctor, doctorPhoneNumber, dengueLevel, releaseInfo, incidentReport, incidentLocation, barangayID, hospitalID, dateFiled) VALUES(?, ? , ?, ?, ?, ?, ? , ?, ?, ?, ?, ? , ?, ?, ?, ?, ?, ?, ?)");
             ps.setString(1, model.getFirstName());
             ps.setString(2, model.getLastName());
             ps.setString(3, model.getNickName());
@@ -144,6 +144,7 @@ public class AdmittanceDAO {
             ps.setInt(16, Integer.parseInt(model.getIncidentLocation()));
             ps.setInt(17, Integer.parseInt(model.getAddress()));
             ps.setInt(18, Integer.parseInt(model.getHospital()));
+            ps.setDate(19, model.getDateFiled());
             ps.executeUpdate();
             
             ps = con.prepareStatement("SELECT LAST_INSERT_ID()");
@@ -236,7 +237,7 @@ public class AdmittanceDAO {
             cf = new ConcreteConnection();
             con = cf.getConnection();
             con2 = cf.getConnection();
-            ps = con.prepareStatement("SELECT * FROM admittance ad, allergies al, consent_status cs, emergency_contact ec, ref_barangay rb, ref_hospital rh WHERE ad.admittanceID = al.admittanceID and ad.consentStatusID = cs.consentStatusID and ad.admittanceID = ec.admittanceID and rb.barangayID = ad.address and rb.barangayID = ad.incidentLocation and ad.hospitalID = rh.hospitalID and ad.hospitalID = ?");
+            ps = con.prepareStatement("SELECT * FROM admittance ad, allergies al, consent_status cs, emergency_contact ec, ref_barangay rb, ref_hospital rh WHERE ad.admittanceID = al.admittanceID and ad.admittanceID = cs.admittanceID and ad.admittanceID = ec.admittanceID and rb.barangayID = ad.barangayID and rb.barangayID = ad.incidentLocation and ad.hospitalID = rh.hospitalID and ad.hospitalID = ?");
             ps.setInt(1, hospitalID);
             rs = ps.executeQuery();
             while(rs.next()){
@@ -266,6 +267,7 @@ public class AdmittanceDAO {
                 model.setIncidentLocation(rs.getString("incidentLocation"));
                 model.setAddress(rs.getString("barangayName"));
                 model.setHospital(rs.getString("hospitalName"));
+                model.setDateFiled(rs.getDate("dateFiled"));
                 
                 //More complicated objects
                 consentModel.setConsentStatusID(rs.getInt("consentStatusID"));
@@ -311,5 +313,14 @@ public class AdmittanceDAO {
             e.printStackTrace();
         }
         return admittances;
+    }
+    
+    public AdmittanceModel getAdmittanceByID(int id){
+        LinkedList<AdmittanceModel> list = getAdmittances();
+        for(int ctr=0; ctr<list.size(); ctr++){
+            if(list.get(ctr).getAdmittanceID()==1)
+                return list.get(ctr);
+        }
+        return null;
     }
 }
