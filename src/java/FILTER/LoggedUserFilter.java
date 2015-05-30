@@ -40,9 +40,7 @@ public class LoggedUserFilter implements Filter {
         
         try(PrintWriter out = response.getWriter()){
             if(!req.getServletPath().equals("/Login.jsp") && !req.getServletPath().equals("/UserAuthenticationServlet") && !req.getServletPath().equals("/UserLogoutServlet")){
-                System.out.println(req.getServletPath());
                 if(req.getSession().getAttribute("isLogged")==null){
-                    System.out.println(req.getSession().getAttribute("isLogged"));
                     out.printf("<script>alert(\"You Must be Logged In to Continue\")</script>");
                     rd.include(req, res);
                     return;

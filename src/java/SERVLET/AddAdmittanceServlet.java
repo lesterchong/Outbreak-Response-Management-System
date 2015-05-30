@@ -14,7 +14,6 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.LinkedList;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -44,14 +43,13 @@ public class AddAdmittanceServlet extends HttpServlet {
             int age;
             AdmittanceModel model = new AdmittanceModel();
             ConsentStatusModel consentModel = new ConsentStatusModel();
+            EmergencyContactModel contactModel = new EmergencyContactModel();
             LinkedList<EmergencyContactModel> emergencyContacts = new LinkedList<>();
             LinkedList<String> allergy = new LinkedList<>();
             AdmittanceDAO dao = new AdmittanceDAO();
             RequestDispatcher rd= getServletContext().getRequestDispatcher("/./rome.jsp");
             SimpleDateFormat sd = new SimpleDateFormat("yyyy-MM-dd");
-            Date date;
             
-            //Dummy values follow
             try{
             model.setFirstName(request.getParameter("firstName"));
             model.setLastName(request.getParameter("lastName"));
@@ -69,7 +67,12 @@ public class AddAdmittanceServlet extends HttpServlet {
             model.setDengueLevel(Integer.parseInt(request.getParameter("dengueLevel")));
             model.setDateFiled(new java.sql.Date(new java.util.Date().getTime()));
             
-            model.setEmergencyContact(emergencyContacts);
+            contactModel.setFirstName(request.getParameter("emergencyFirstName"));
+            contactModel.setLastName(request.getParameter("emergencyLastName"));
+            contactModel.setPrimaryPhoneNumber(Long.parseLong(request.getParameter("emergencyPrimaryNumber")));
+            contactModel.setSecondaryPhoneNumber(Long.parseLong(request.getParameter("emergencySecondaryNumber")));
+            contactModel.setRelationship(request.getParameter("emergencyRelationship"));
+            model.setEmergencyContact(contactModel);
             
             allergy.add(request.getParameter("allergy"));
             model.setAllergies(allergy);
@@ -88,7 +91,7 @@ public class AddAdmittanceServlet extends HttpServlet {
             model.setIncidentReport(request.getParameter("incidentReport"));
             model.setIncidentLocation(request.getParameter("incidentLocation"));
             //Remember to access session to know from which hospital
-            model.setHospital(String.valueOf(0));
+            model.setHospital((request.getSession().getAttribute("hospitalID").toString()));
             
             if(dao.addAdmittance(model)){
                 out.printf("<script>alert(\"Successfully Updated\")</script>");

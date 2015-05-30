@@ -45,15 +45,17 @@ public class AddDischargeServlet extends HttpServlet {
             AdmittanceDAO adDao = new AdmittanceDAO();
             SimpleDateFormat sd = new SimpleDateFormat();
             RequestDispatcher rd = getServletContext().getRequestDispatcher(null);
+            int patientID;
             
             try{
-                adModel = adDao.getAdmittanceByID(0);
+                patientID = Integer.parseInt(request.getParameter("patient"));
+                adModel = adDao.getAdmittanceByID(patientID);
                 model.setFirstName(adModel.getFirstName()); //Provided in admittance
                 model.setLastName(adModel.getLastName()); //Provided in admittance
                 model.setAttendingPhysician(adModel.getPrimaryDoctor()); //Provided in admittance
-                model.setRoomNumber(Integer.parseInt(request.getParameter("roomNumber")));
                 model.setPatientNumber(adModel.getAdmittanceID()); //Provided in admittance
                 model.setDateOfAdmission(adModel.getDateFiled()); //Provided in admittance
+                model.setRoomNumber(Integer.parseInt(request.getParameter("roomNumber")));
                 model.setDateOfDischarge(new java.sql.Date(sd.parse(request.getParameter("dateOfDischarge")).getTime()));
                 model.setProvisionalDiagnosis(request.getParameter("provisionalDiagnosis"));
                 model.setFinalDiagnosis(request.getParameter("finalDiagnosis"));
@@ -65,10 +67,10 @@ public class AddDischargeServlet extends HttpServlet {
                 model.setFollowUp(request.getParameter("followUp"));
                 model.setDateFiled(new java.sql.Date(new java.util.Date().getTime()));
                 model.setApprovedBy(request.getParameter("approvedBy"));
-                
-                model.setHospitalID(0);
+                model.setHospitalID(Integer.parseInt(request.getSession().getAttribute("hospitalID").toString()));
                 
                 if(dao.addDischarge(model)){
+                    adDao.deleteAdmittance(patientID);
                     out.printf("<script>alert(\"Successfully Updated\")</script>");
                     rd.include(request, response);
                     return;

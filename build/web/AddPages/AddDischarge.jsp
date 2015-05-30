@@ -23,7 +23,7 @@
             Patient: <select name="patient">
                 <%
                     for(int ctr=0; ctr<list.size(); ctr++){
-                        out.println("<option value="+list.get(ctr).getAdmittanceID()+">"+list.get(ctr).getLastName()+","+list.get(ctr).getFirstName()+"</option>");
+                        out.println("<option value="+list.get(ctr).getAdmittanceID()+">"+list.get(ctr).getLastName()+", "+list.get(ctr).getFirstName()+"</option>");
                     }
                 %>
             </select>

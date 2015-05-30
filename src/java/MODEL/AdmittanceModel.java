@@ -34,7 +34,7 @@ public class AdmittanceModel {
     private String incidentLocation;
     private String address;
     private LinkedList<String> allergies;
-    private LinkedList<EmergencyContactModel> emergencyContact;
+    private EmergencyContactModel emergencyContact;
     private String hospital;
     private Date dateFiled;
 
@@ -321,14 +321,14 @@ public class AdmittanceModel {
     /**
      * @return the emergencyContact
      */
-    public LinkedList<EmergencyContactModel> getEmergencyContact() {
+    public EmergencyContactModel getEmergencyContact() {
         return emergencyContact;
     }
 
     /**
      * @param emergencyContact the emergencyContact to set
      */
-    public void setEmergencyContact(LinkedList<EmergencyContactModel> emergencyContact) {
+    public void setEmergencyContact(EmergencyContactModel emergencyContact) {
         this.emergencyContact = emergencyContact;
     }
 

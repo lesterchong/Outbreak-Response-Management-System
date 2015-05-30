@@ -30,8 +30,7 @@ public class AdmittanceDAO {
     public LinkedList<AdmittanceModel> getAdmittances(){
         LinkedList<AdmittanceModel> admittances = new LinkedList<>();
         LinkedList<String> allergies;
-        LinkedList<EmergencyContactModel> emergencyContacts;
-        EmergencyContactModel temp;
+        EmergencyContactModel contactModel;
         Connection con2;
         PreparedStatement ps2;
         ResultSet rs2;
@@ -43,13 +42,13 @@ public class AdmittanceDAO {
             cf = new ConcreteConnection();
             con = cf.getConnection();
             con2 = cf.getConnection();
-            ps = con.prepareStatement("SELECT * FROM admittance ad, allergies al, consent_status cs, emergency_contact ec, ref_barangay rb, ref_hospital rh WHERE ad.admittanceID = al.admittanceID and ad.admittanceID = ec.admittanceID and rb.barangayID = ad.barangayID and rb.barangayID = ad.incidentLocation and ad.hospitalID = rh.hospitalID and ad.admittanceID = cs.admittanceID");
+            ps = con.prepareStatement("SELECT * FROM admittance ad, allergies al, consent_status cs, emergency_contact ec, ref_barangay rb, ref_hospital rh, ref_civil_status rc WHERE ad.admittanceID = al.admittanceID and ad.admittanceID = ec.admittanceID and rb.barangayID = ad.barangayID and rb.barangayID = ad.incidentLocation and ad.hospitalID = rh.hospitalID and ad.civilStatusID = rc.civilStatusID and ad.admittanceID = cs.admittanceID");
             rs = ps.executeQuery();
             while(rs.next()){
                 model = new AdmittanceModel();
                 consentModel = new ConsentStatusModel();
+                contactModel = new EmergencyContactModel();
                 allergies = new LinkedList<>();
-                emergencyContacts = new LinkedList<>();
                 
                 model.setAdmittanceID(rs.getInt("admittanceID"));
                 admittanceID = model.getAdmittanceID();
@@ -74,7 +73,6 @@ public class AdmittanceDAO {
                 model.setHospital(rs.getString("hospitalName"));
                 
                 //More complicated objects
-                consentModel.setConsentStatusID(rs.getInt("consentStatusID"));
                 consentModel.setConsentStatus(rs.getString("consentStatus"));
                 if(Integer.parseInt(consentModel.getConsentStatus())==1){
                     consentModel.setLegalGuardian(rs.getString("legalGuardian"));
@@ -96,19 +94,16 @@ public class AdmittanceDAO {
                 model.setAllergies(allergies);
                 
                 ps2 = con2.prepareStatement("SELECT * FROM emergency_contact ec WHERE ec.admittanceID = ?");
-                ps.setInt(1, admittanceID);
+                ps2.setInt(1, admittanceID);
                 rs2 = ps2.executeQuery();
                 while(rs2.next()){
-                    temp = new EmergencyContactModel();
-                    temp.setEmergencyContactID(rs.getInt("emergencyContactID"));
-                    temp.setFirstName(rs.getString("firstName"));
-                    temp.setLastName(rs.getString("lastName"));
-                    temp.setPrimaryPhoneNumber(rs.getInt("primaryPhoneNumber"));
-                    temp.setSecondaryPhoneNumber(rs.getInt("secondaryPhoneNumber"));
-                    temp.setRelationship(rs.getString("relationship"));
-                    emergencyContacts.add(temp);
+                    contactModel.setFirstName(rs.getString("firstName"));
+                    contactModel.setLastName(rs.getString("lastName"));
+                    contactModel.setPrimaryPhoneNumber(rs.getInt("primaryPhoneNumber"));
+                    contactModel.setSecondaryPhoneNumber(rs.getInt("secondaryPhoneNumber"));
+                    contactModel.setRelationship(rs.getString("relationship"));
                 }
-                model.setEmergencyContact(emergencyContacts);
+                model.setEmergencyContact(contactModel);
                 
                 admittances.add(model);
             }
@@ -171,15 +166,13 @@ public class AdmittanceDAO {
             }
                 
             ps = con.prepareStatement("INSERT INTO emergency_contact(firstName, lastName, primaryPhoneNumber, secondaryPhoneNumber, relationship, admittanceID) VALUES(?, ?, ?, ?, ?, ?)");
-            for(int ctr=0; ctr<model.getEmergencyContact().size(); ctr++){
-                ps.setString(1, model.getEmergencyContact().get(ctr).getFirstName());
-                ps.setString(2, model.getEmergencyContact().get(ctr).getLastName());
-                ps.setInt(3, (int)model.getEmergencyContact().get(ctr).getPrimaryPhoneNumber());
-                ps.setInt(4, (int)model.getEmergencyContact().get(ctr).getSecondaryPhoneNumber());
-                ps.setString(5, model.getEmergencyContact().get(ctr).getRelationship());
-                ps.setInt(6, admittanceID);
-                ps.executeUpdate();
-            }
+            ps.setString(1, model.getEmergencyContact().getFirstName());
+            ps.setString(2, model.getEmergencyContact().getLastName());
+            ps.setInt(3, (int)model.getEmergencyContact().getPrimaryPhoneNumber());
+            ps.setInt(4, (int)model.getEmergencyContact().getSecondaryPhoneNumber());
+            ps.setString(5, model.getEmergencyContact().getRelationship());
+            ps.setInt(6, admittanceID);
+            ps.executeUpdate();
             con.close();
             return true;
         }catch(SQLException e){
@@ -224,7 +217,7 @@ public class AdmittanceDAO {
     public LinkedList<AdmittanceModel> getAdmittancesByHospital(int hospitalID){
         LinkedList<AdmittanceModel> admittances = new LinkedList<>();
         LinkedList<String> allergies;
-        LinkedList<EmergencyContactModel> emergencyContacts;
+        EmergencyContactModel contactModel;
         EmergencyContactModel temp;
         Connection con2;
         PreparedStatement ps2;
@@ -243,8 +236,8 @@ public class AdmittanceDAO {
             while(rs.next()){
                 model = new AdmittanceModel();
                 consentModel = new ConsentStatusModel();
+                contactModel = new EmergencyContactModel();
                 allergies = new LinkedList<>();
-                emergencyContacts = new LinkedList<>();
                 
                 model.setAdmittanceID(rs.getInt("admittanceID"));
                 admittanceID = model.getAdmittanceID();
@@ -295,16 +288,13 @@ public class AdmittanceDAO {
                 ps.setInt(1, admittanceID);
                 rs2 = ps2.executeQuery();
                 while(rs2.next()){
-                    temp = new EmergencyContactModel();
-                    temp.setEmergencyContactID(rs.getInt("emergencyContactID"));
-                    temp.setFirstName(rs.getString("firstName"));
-                    temp.setLastName(rs.getString("lastName"));
-                    temp.setPrimaryPhoneNumber(rs.getInt("primaryPhoneNumber"));
-                    temp.setSecondaryPhoneNumber(rs.getInt("secondaryPhoneNumber"));
-                    temp.setRelationship(rs.getString("relationship"));
-                    emergencyContacts.add(temp);
+                    contactModel.setFirstName(rs.getString("firstName"));
+                    contactModel.setLastName(rs.getString("lastName"));
+                    contactModel.setPrimaryPhoneNumber(rs.getInt("primaryPhoneNumber"));
+                    contactModel.setSecondaryPhoneNumber(rs.getInt("secondaryPhoneNumber"));
+                    contactModel.setRelationship(rs.getString("relationship"));
                 }
-                model.setEmergencyContact(emergencyContacts);
+                model.setEmergencyContact(contactModel);
                 
                 admittances.add(model);
             }

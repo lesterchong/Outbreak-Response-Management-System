@@ -83,6 +83,18 @@
             %>
             </select>
             <br>
+            <h3>Emergency Contact: </h3>
+            <br>
+            First Name: <input name="emergencyFirstName" type="text"/>
+            <br>
+            Last Name: <input name="emergencyLastName" type="text"/>
+            <br>
+            Primary Phone Number: <input name="emergencyPrimaryNumber" type="number"/>
+            <br>
+            Secondary Phone Number: <input name="emergencySecondaryNumber" type="number"/>
+            <br>
+            Relationship: <input name="emergencyRelationship" type="text"/>
+            <br>
             <button type="submit">Submit</button>
         </form>
     </body>
