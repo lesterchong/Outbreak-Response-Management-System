@@ -8,23 +8,16 @@ package SERVLET;
 
 import DAO.AdmittanceDAO;
 import MODEL.AdmittanceModel;
-import MODEL.ConsentStatusModel;
-import MODEL.EmergencyContactModel;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.LinkedList;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-/**
- *
- * Unfinished
- */
 public class AddAdmittanceServlet extends HttpServlet {
 
     /**
@@ -40,74 +33,49 @@ public class AddAdmittanceServlet extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-            int age;
             AdmittanceModel model = new AdmittanceModel();
-            ConsentStatusModel consentModel = new ConsentStatusModel();
-            EmergencyContactModel contactModel = new EmergencyContactModel();
-            LinkedList<EmergencyContactModel> emergencyContacts = new LinkedList<>();
-            LinkedList<String> allergy = new LinkedList<>();
             AdmittanceDAO dao = new AdmittanceDAO();
-            RequestDispatcher rd= getServletContext().getRequestDispatcher("/./rome.jsp");
-            SimpleDateFormat sd = new SimpleDateFormat("yyyy-MM-dd");
+            SimpleDateFormat sd = new SimpleDateFormat("dd MMMM, yyyy");
+            RequestDispatcher rd;
             
             try{
-            model.setFirstName(request.getParameter("firstName"));
-            model.setLastName(request.getParameter("lastName"));
-            model.setNickName(request.getParameter("nickName"));
-            model.setDateOfBirth(new java.sql.Date(sd.parse(request.getParameter("dateOfBirth")).getTime()));
-            model.setSocialSecurityNumber(Integer.parseInt(request.getParameter("sss")));
-            model.setPhoneNumber(Integer.parseInt(request.getParameter("phoneNumber")));
-            model.setCivilStatus(request.getParameter("civilStatus"));
-            age = Integer.parseInt(request.getParameter("age"));
-            model.setAge(age);
-            model.setInsuranceType(Integer.parseInt(request.getParameter("insuranceType")));
-            model.setInsuranceNumber(Integer.parseInt(request.getParameter("insuranceNumber")));
-            model.setPrimaryDoctor(request.getParameter("primaryDoctor"));
-            model.setDoctorPhoneNumber(Integer.parseInt(request.getParameter("doctorNumber")));
-            model.setDengueLevel(Integer.parseInt(request.getParameter("dengueLevel")));
-            model.setDateFiled(new java.sql.Date(new java.util.Date().getTime()));
-            
-            contactModel.setFirstName(request.getParameter("emergencyFirstName"));
-            contactModel.setLastName(request.getParameter("emergencyLastName"));
-            contactModel.setPrimaryPhoneNumber(Long.parseLong(request.getParameter("emergencyPrimaryNumber")));
-            contactModel.setSecondaryPhoneNumber(Long.parseLong(request.getParameter("emergencySecondaryNumber")));
-            contactModel.setRelationship(request.getParameter("emergencyRelationship"));
-            model.setEmergencyContact(contactModel);
-            
-            allergy.add(request.getParameter("allergy"));
-            model.setAllergies(allergy);
-                    
-            //Fucking consent status is here
-            if(age>18){
-                consentModel.setConsentStatus("1");
-                consentModel.setLegalGuardian(request.getParameter("legalGuardian"));
-                consentModel.setGuardianNumber(Integer.parseInt(request.getParameter("guardianNumber")));
-            }else
-                consentModel.setConsentStatus("0");
-            
-            model.setConsentStatus(consentModel);   
-            model.setAddress(request.getParameter("address"));
-            model.setReleaseInfo(Integer.parseInt(request.getParameter("releaseInfo")));
-            model.setIncidentReport(request.getParameter("incidentReport"));
-            model.setIncidentLocation(request.getParameter("incidentLocation"));
-            //Remember to access session to know from which hospital
-            model.setHospital((request.getSession().getAttribute("hospitalID").toString()));
-            
-            if(dao.addAdmittance(model)){
-                out.printf("<script>alert(\"Successfully Updated\")</script>");
-                rd.include(request, response);
-                return;
-            }else{
-                rd = getServletContext().getRequestDispatcher("/./AddPages/AddAdmittance.jsp");
-                out.printf("<script>alert(\"Error\")</script>");
-                rd.include(request, response);
-                return;
-            }
-            
+                model.setPatientFirstName(request.getParameter("patientFirstName"));
+                model.setPatientLastName(request.getParameter("patientLastName"));
+                model.setPatientBirthDate(new java.sql.Date(sd.parse(request.getParameter("patientBirthdate")).getTime()));
+                model.setPatientAge(Integer.parseInt(request.getParameter("patientAge")));
+                model.setPatientCivilStatus(request.getParameter("patientCivilStatus"));
+                model.setPatientPhoneNumber(Long.parseLong(request.getParameter("patientPhoneNumber")));
+                model.setPatientAddress(request.getParameter("patientAddress"));
+                model.setPatientBarangay(request.getParameter("patientBarangay"));
+                model.setIncidentLocation(request.getParameter("incidentLocation"));
+                model.setIncidentBarangay(request.getParameter("incidentBarangay"));
+                model.setKnownAllergies(request.getParameter("knownAllergy"));
+                
+                model.setCompanionAddress(request.getParameter("companionAddress"));
+                model.setCompanionAge(Integer.parseInt(request.getParameter("companionAge")));
+                model.setCompanionBarangay(request.getParameter("companionBarangay"));
+                model.setCompanionBirthDate(new java.sql.Date(sd.parse(request.getParameter("companionBirthdate")).getTime()));
+                model.setCompanionFirstName(request.getParameter("companionFirstName"));
+                model.setCompanionLastName(request.getParameter("companionLastName"));
+                model.setCompanionPhoneNumber(Long.parseLong(request.getParameter("companionPhoneNumber")));
+                model.setCompanionRelationship(request.getParameter("companionRelationship"));
+                
+                model.setDateFiled(new java.sql.Date(new java.util.Date().getTime()));
+                //
+                model.setHospitalID(0);
+                if(dao.addAdmittance(model)){
+                    out.printf("<script>alert(\"Successfully Updated\")</script>");
+                    rd = getServletContext().getRequestDispatcher("/index.html");
+                    rd.include(request, response);
+                    return;
+                }else{
+                    out.printf("<script>alert(\"Could Not Update\")</script>");
+                    return;
+                }
             }catch(ParseException e){
-                e.printStackTrace();
+                out.printf("<script>alert(\"An Error Occured\")</script>");
+                return;
             }
-                    
         }
     }
 

@@ -39,50 +39,7 @@ public class AddDischargeServlet extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-            DischargeDAO dao = new DischargeDAO();
-            DischargeModel model = new DischargeModel();
-            AdmittanceModel adModel;
-            AdmittanceDAO adDao = new AdmittanceDAO();
-            SimpleDateFormat sd = new SimpleDateFormat();
-            RequestDispatcher rd = getServletContext().getRequestDispatcher(null);
-            int patientID;
             
-            try{
-                patientID = Integer.parseInt(request.getParameter("patient"));
-                adModel = adDao.getAdmittanceByID(patientID);
-                model.setFirstName(adModel.getFirstName()); //Provided in admittance
-                model.setLastName(adModel.getLastName()); //Provided in admittance
-                model.setAttendingPhysician(adModel.getPrimaryDoctor()); //Provided in admittance
-                model.setPatientNumber(adModel.getAdmittanceID()); //Provided in admittance
-                model.setDateOfAdmission(adModel.getDateFiled()); //Provided in admittance
-                model.setRoomNumber(Integer.parseInt(request.getParameter("roomNumber")));
-                model.setDateOfDischarge(new java.sql.Date(sd.parse(request.getParameter("dateOfDischarge")).getTime()));
-                model.setProvisionalDiagnosis(request.getParameter("provisionalDiagnosis"));
-                model.setFinalDiagnosis(request.getParameter("finalDiagnosis"));
-                model.setBriefHistory(request.getParameter("briefHistory"));
-                model.setFindings(request.getParameter("findings"));
-                model.setCourseOfTreatment(request.getParameter("courseOfTreatment"));
-                model.setDischargeCondition(request.getParameter("conditonOfDischarge"));
-                model.setRehabPotential(request.getParameter("rehabPotential"));
-                model.setFollowUp(request.getParameter("followUp"));
-                model.setDateFiled(new java.sql.Date(new java.util.Date().getTime()));
-                model.setApprovedBy(request.getParameter("approvedBy"));
-                model.setHospitalID(Integer.parseInt(request.getSession().getAttribute("hospitalID").toString()));
-                
-                if(dao.addDischarge(model)){
-                    adDao.deleteAdmittance(patientID);
-                    out.printf("<script>alert(\"Successfully Updated\")</script>");
-                    rd.include(request, response);
-                    return;
-                }else{
-                    rd = getServletContext().getRequestDispatcher("/./AddPages/AddAdmittance.jsp");
-                    out.printf("<script>alert(\"Error\")</script>");
-                    rd.include(request, response);
-                    return;
-                }
-            }catch(ParseException e){
-                e.printStackTrace();
-            }
         }
     }
 

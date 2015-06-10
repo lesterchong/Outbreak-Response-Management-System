@@ -9,18 +9,13 @@ package DAO;
 import DB.ConcreteConnection;
 import DB.ConnectionFactory;
 import MODEL.AdmittanceModel;
-import MODEL.ConsentStatusModel;
-import MODEL.EmergencyContactModel;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.LinkedList;
 
-/**
- *
- * @author Lester Chong
- */
+
 public class AdmittanceDAO {
     private Connection con;
     private PreparedStatement ps;
@@ -29,81 +24,38 @@ public class AdmittanceDAO {
     
     public LinkedList<AdmittanceModel> getAdmittances(){
         LinkedList<AdmittanceModel> admittances = new LinkedList<>();
-        LinkedList<String> allergies;
-        EmergencyContactModel contactModel;
-        Connection con2;
-        PreparedStatement ps2;
-        ResultSet rs2;
         AdmittanceModel model;
-        ConsentStatusModel consentModel;
-        int admittanceID;
-        
+
         try{
             cf = new ConcreteConnection();
             con = cf.getConnection();
-            con2 = cf.getConnection();
-            ps = con.prepareStatement("SELECT * FROM admittance ad, allergies al, consent_status cs, emergency_contact ec, ref_barangay rb, ref_hospital rh, ref_civil_status rc WHERE ad.admittanceID = al.admittanceID and ad.admittanceID = ec.admittanceID and rb.barangayID = ad.barangayID and rb.barangayID = ad.incidentLocation and ad.hospitalID = rh.hospitalID and ad.civilStatusID = rc.civilStatusID and ad.admittanceID = cs.admittanceID");
+            ps = con.prepareStatement("SELECT * FROM admittance a, ref_barangay rb, ref_hospital rh, ref_civil_status rcs, ref_relationship rr WHERE a.patientBarangay = rb.barangayID and a.incidentBarangay = rb.barangayID and a.companionBarangay = rb.barangayID and a.patientCivilStatus = rcs.civilStatusID and a.companionRelationship = rr.relationshipID and a.hospitalID = rh.hospitalID");
             rs = ps.executeQuery();
             while(rs.next()){
                 model = new AdmittanceModel();
-                consentModel = new ConsentStatusModel();
-                contactModel = new EmergencyContactModel();
-                allergies = new LinkedList<>();
-                
                 model.setAdmittanceID(rs.getInt("admittanceID"));
-                admittanceID = model.getAdmittanceID();
-                
-                model.setFirstName(rs.getString("firstName"));
-                model.setLastName(rs.getString("lastName"));
-                model.setNickName(rs.getString("nickName"));
-                model.setDateOfBirth(rs.getDate("dateOfBirth"));
-                model.setSocialSecurityNumber(rs.getInt("socialSecurityNumber"));
-                model.setPhoneNumber(rs.getInt("phoneNumber"));
-                model.setCivilStatus(rs.getString("civilStatusName"));
-                model.setAge(rs.getInt("age"));
-                model.setInsuranceType(rs.getInt("insuranceType"));
-                model.setInsuranceNumber(rs.getInt("insuranceNumber"));
-                model.setPrimaryDoctor(rs.getString("primaryDoctor"));
-                model.setDoctorPhoneNumber(rs.getInt("doctorPhoneNumber"));
-                model.setDengueLevel(rs.getInt("dengueLevel"));
-                model.setReleaseInfo(rs.getInt("releaseInfo"));
-                model.setIncidentReport(rs.getString("incidentReport"));
+                model.setPatientFirstName(rs.getString("patientFirstName"));
+                model.setPatientLastName(rs.getString("patientLastName"));
+                model.setPatientAge(rs.getInt("patientAge"));
+                model.setPatientPhoneNumber(rs.getInt("patientPhoneNumber"));
+                model.setPatientCivilStatus(rs.getString("civilStatusName"));
+                model.setPatientBirthDate(rs.getDate("patientBirthdate"));
+                model.setPatientAddress(rs.getString("patientAddress"));
+                model.setPatientBarangay(rs.getString("barangayName"));
+                model.setKnownAllergies(rs.getString("knownAllergies"));
                 model.setIncidentLocation(rs.getString("incidentLocation"));
-                model.setAddress(rs.getString("barangayName"));
-                model.setHospital(rs.getString("hospitalName"));
+                model.setIncidentBarangay(rs.getString("barangayName"));
                 
-                //More complicated objects
-                consentModel.setConsentStatus(rs.getString("consentStatus"));
-                if(Integer.parseInt(consentModel.getConsentStatus())==1){
-                    consentModel.setLegalGuardian(rs.getString("legalGuardian"));
-                    consentModel.setGuardianNumber(rs.getInt("guardianPhone"));
-                }else if(Integer.parseInt(consentModel.getConsentStatus())==2){
-                    consentModel.setDecisionMaker(rs.getString("decisionMaker"));
-                    consentModel.setDecisionNumber(rs.getInt("decisionPhone"));
-                    consentModel.setMedicalPOA("medicalPOA");
-                    consentModel.setMedicalNumber(rs.getInt("medicalNumber"));
-                }
-                model.setConsentStatus(consentModel);
-                
-                ps2 = con2.prepareStatement("SELECT * FROM allergies a WHERE a.admittanceID = ?");
-                ps2.setInt(1, admittanceID);
-                rs2 = ps2.executeQuery();
-                while(rs2.next()){
-                    allergies.add(rs.getString("allergyName"));
-                }
-                model.setAllergies(allergies);
-                
-                ps2 = con2.prepareStatement("SELECT * FROM emergency_contact ec WHERE ec.admittanceID = ?");
-                ps2.setInt(1, admittanceID);
-                rs2 = ps2.executeQuery();
-                while(rs2.next()){
-                    contactModel.setFirstName(rs.getString("firstName"));
-                    contactModel.setLastName(rs.getString("lastName"));
-                    contactModel.setPrimaryPhoneNumber(rs.getInt("primaryPhoneNumber"));
-                    contactModel.setSecondaryPhoneNumber(rs.getInt("secondaryPhoneNumber"));
-                    contactModel.setRelationship(rs.getString("relationship"));
-                }
-                model.setEmergencyContact(contactModel);
+                model.setCompanionFirstName(rs.getString("companionFirstName"));
+                model.setCompanionLastName(rs.getString("companionLastName"));
+                model.setCompanionAge(rs.getInt("companionAge"));
+                model.setCompanionBirthDate(rs.getDate("companionAge"));
+                model.setCompanionPhoneNumber(rs.getInt("companionPhoneNumber"));
+                model.setCompanionRelationship(rs.getString("relationshipName"));
+                model.setCompanionAddress(rs.getString("companionAddress"));
+                model.setCompanionBarangay(rs.getString("barangayName"));
+                model.setHospitalID(rs.getInt("hospitalName"));
+                model.setDateFiled(rs.getDate("dateFiled"));
                 
                 admittances.add(model);
             }
@@ -115,63 +67,31 @@ public class AdmittanceDAO {
     }
     
     public boolean addAdmittance(AdmittanceModel model){
-        int admittanceID;
-        
         try{
             cf = new ConcreteConnection();
             con = cf.getConnection();
-            ps = con.prepareStatement("INSERT INTO admittance(firstName, lastName, nickName, dateOfBirth, socialSecurityNumber, phoneNumber, civilStatusID, age, insuranceType, insuranceNumber, primaryDoctor, doctorPhoneNumber, dengueLevel, releaseInfo, incidentReport, incidentLocation, barangayID, hospitalID, dateFiled) VALUES(?, ? , ?, ?, ?, ?, ? , ?, ?, ?, ?, ? , ?, ?, ?, ?, ?, ?, ?)");
-            ps.setString(1, model.getFirstName());
-            ps.setString(2, model.getLastName());
-            ps.setString(3, model.getNickName());
-            ps.setDate(4, model.getDateOfBirth());
-            ps.setInt(5, (int)model.getSocialSecurityNumber());
-            ps.setInt(6, (int)model.getPhoneNumber());
-            ps.setInt(7, Integer.parseInt(model.getCivilStatus()));
-            ps.setInt(8, model.getAge());
-            ps.setInt(9, model.getInsuranceType());
-            ps.setInt(10, model.getInsuranceNumber());
-            ps.setString(11, model.getPrimaryDoctor());
-            ps.setInt(12, (int)model.getDoctorPhoneNumber());
-            ps.setInt(13, model.getDengueLevel());
-            ps.setInt(14, model.getReleaseInfo());
-            ps.setString(15, model.getIncidentReport());
-            ps.setInt(16, Integer.parseInt(model.getIncidentLocation()));
-            ps.setInt(17, Integer.parseInt(model.getAddress()));
-            ps.setInt(18, Integer.parseInt(model.getHospital()));
-            ps.setDate(19, model.getDateFiled());
-            ps.executeUpdate();
-            
-            ps = con.prepareStatement("SELECT LAST_INSERT_ID()");
-            rs = ps.executeQuery();
-            rs.next();
-            admittanceID = rs.getInt(1);
-            
-            ps = con.prepareStatement("INSERT INTO consent_status(admittanceID, consentStatus, legalGuardian, guardianPhone, decisionMaker, decisionPhone, medicalPOA, medicalNumber) VALUES(?, ?, ?, ?, ?, ?, ?, ?)");
-            ps.setInt(1, admittanceID);
-            ps.setInt(2, Integer.parseInt(model.getConsentStatus().getConsentStatus()));
-            ps.setString(3, model.getConsentStatus().getLegalGuardian());
-            ps.setInt(4, (int)model.getConsentStatus().getGuardianNumber());
-            ps.setString(5, model.getConsentStatus().getDecisionMaker());
-            ps.setInt(6, (int)model.getConsentStatus().getDecisionNumber());
-            ps.setString(7, model.getConsentStatus().getMedicalPOA());
-            ps.setInt(8, (int)model.getConsentStatus().getMedicalNumber());
-            ps.executeUpdate();
-            
-            ps = con.prepareStatement("INSERT INTO allergies(admittanceID, allergyName) VALUES(?, ?)");
-            for(int ctr=0; ctr<model.getAllergies().size(); ctr++){
-                ps.setInt(1, admittanceID);
-                ps.setString(2, model.getAllergies().get(ctr));
-                ps.executeUpdate();
-            }
-                
-            ps = con.prepareStatement("INSERT INTO emergency_contact(firstName, lastName, primaryPhoneNumber, secondaryPhoneNumber, relationship, admittanceID) VALUES(?, ?, ?, ?, ?, ?)");
-            ps.setString(1, model.getEmergencyContact().getFirstName());
-            ps.setString(2, model.getEmergencyContact().getLastName());
-            ps.setInt(3, (int)model.getEmergencyContact().getPrimaryPhoneNumber());
-            ps.setInt(4, (int)model.getEmergencyContact().getSecondaryPhoneNumber());
-            ps.setString(5, model.getEmergencyContact().getRelationship());
-            ps.setInt(6, admittanceID);
+            ps = con.prepareStatement("INSERT INTO admittance(patientFirstName, patientLastName, patientAge, patientBirthdate, patientPhoneNumber, patientCivilStatus, patientAddress, patientBarangay, incidentLocation, incidentBarangay, knownAllergies, companionFirstName, companionLastName, companionAge, companionBirthdate, companionPhoneNumber, companionRelationship, companionAddress, companionBarangay, hospitalID, dateFiled) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+            ps.setString(1, model.getPatientFirstName());
+            ps.setString(2, model.getPatientLastName());
+            ps.setInt(3, model.getPatientAge());
+            ps.setDate(4, model.getPatientBirthDate());
+            ps.setLong(5, model.getPatientPhoneNumber());
+            ps.setInt(6, Integer.parseInt(model.getPatientCivilStatus()));
+            ps.setString(7, model.getPatientAddress());
+            ps.setInt(8, Integer.parseInt(model.getPatientBarangay()));
+            ps.setString(9, model.getIncidentLocation());
+            ps.setInt(10, Integer.parseInt(model.getIncidentBarangay()));
+            ps.setString(11, model.getKnownAllergies());
+            ps.setString(12, model.getCompanionFirstName());
+            ps.setString(13, model.getCompanionLastName());
+            ps.setInt(14, model.getCompanionAge());
+            ps.setDate(15, model.getCompanionBirthDate());
+            ps.setLong(16, model.getCompanionPhoneNumber());
+            ps.setInt(17, Integer.parseInt(model.getCompanionRelationship()));
+            ps.setString(18, model.getCompanionAddress());
+            ps.setInt(19, Integer.parseInt(model.getCompanionBarangay()));
+            ps.setInt(20, model.getHospitalID());
+            ps.setDate(21, model.getDateFiled());
             ps.executeUpdate();
             con.close();
             return true;
@@ -216,85 +136,40 @@ public class AdmittanceDAO {
     
     public LinkedList<AdmittanceModel> getAdmittancesByHospital(int hospitalID){
         LinkedList<AdmittanceModel> admittances = new LinkedList<>();
-        LinkedList<String> allergies;
-        EmergencyContactModel contactModel;
-        EmergencyContactModel temp;
-        Connection con2;
-        PreparedStatement ps2;
-        ResultSet rs2;
         AdmittanceModel model;
-        ConsentStatusModel consentModel;
-        int admittanceID;
+
         
         try{
             cf = new ConcreteConnection();
             con = cf.getConnection();
-            con2 = cf.getConnection();
-            ps = con.prepareStatement("SELECT * FROM admittance ad, allergies al, consent_status cs, emergency_contact ec, ref_barangay rb, ref_hospital rh WHERE ad.admittanceID = al.admittanceID and ad.admittanceID = cs.admittanceID and ad.admittanceID = ec.admittanceID and rb.barangayID = ad.barangayID and rb.barangayID = ad.incidentLocation and ad.hospitalID = rh.hospitalID and ad.hospitalID = ?");
+            ps = con.prepareStatement("SELECT * FROM admittance a, ref_barangay rb, ref_hospital rh, ref_civil_status rcs, ref_relationship rr WHERE a.patientBarangay = rb.barangayID and a.incidentBarangay = rb.barangayID and a.companionBarangay = rb.barangayID and a.patientCivilStatus = rcs.civilStatusID and a.companionRelationship = rr.relationshipID and a.hospitalID = rh.hospitalID and a.hospitalID = ?");
             ps.setInt(1, hospitalID);
             rs = ps.executeQuery();
             while(rs.next()){
                 model = new AdmittanceModel();
-                consentModel = new ConsentStatusModel();
-                contactModel = new EmergencyContactModel();
-                allergies = new LinkedList<>();
-                
                 model.setAdmittanceID(rs.getInt("admittanceID"));
-                admittanceID = model.getAdmittanceID();
-                
-                model.setFirstName(rs.getString("firstName"));
-                model.setLastName(rs.getString("lastName"));
-                model.setNickName(rs.getString("nickName"));
-                model.setDateOfBirth(rs.getDate("dateOfBirth"));
-                model.setSocialSecurityNumber(rs.getInt("socialSecurityNumber"));
-                model.setPhoneNumber(rs.getInt("phoneNumber"));
-                model.setCivilStatus(rs.getString("civilStatusName"));
-                model.setAge(rs.getInt("age"));
-                model.setInsuranceType(rs.getInt("insuranceType"));
-                model.setInsuranceNumber(rs.getInt("insuranceNumber"));
-                model.setPrimaryDoctor(rs.getString("primaryDoctor"));
-                model.setDoctorPhoneNumber(rs.getInt("doctorPhoneNumber"));
-                model.setDengueLevel(rs.getInt("dengueLevel"));
-                model.setReleaseInfo(rs.getInt("releaseInfo"));
-                model.setIncidentReport(rs.getString("incidentReport"));
+                model.setPatientFirstName(rs.getString("patientFirstName"));
+                model.setPatientLastName(rs.getString("patientLastName"));
+                model.setPatientAge(rs.getInt("patientAge"));
+                model.setPatientPhoneNumber(rs.getInt("patientPhoneNumber"));
+                model.setPatientCivilStatus(rs.getString("civilStatusName"));
+                model.setPatientBirthDate(rs.getDate("patientBirthdate"));
+                model.setPatientAddress(rs.getString("patientAddress"));
+                model.setPatientBarangay(rs.getString("barangayName"));
+                model.setKnownAllergies(rs.getString("knownAllergies"));
                 model.setIncidentLocation(rs.getString("incidentLocation"));
-                model.setAddress(rs.getString("barangayName"));
-                model.setHospital(rs.getString("hospitalName"));
+                model.setIncidentBarangay(rs.getString("barangayName"));
+                
+                model.setCompanionFirstName(rs.getString("companionFirstName"));
+                model.setCompanionLastName(rs.getString("companionLastName"));
+                model.setCompanionAge(rs.getInt("companionAge"));
+                model.setCompanionBirthDate(rs.getDate("companionAge"));
+                model.setCompanionPhoneNumber(rs.getInt("companionPhoneNumber"));
+                model.setCompanionRelationship(rs.getString("relationshipName"));
+                model.setCompanionAddress(rs.getString("companionAddress"));
+                model.setCompanionBarangay(rs.getString("barangayName"));
+                model.setHospitalID(rs.getInt("hospitalName"));
                 model.setDateFiled(rs.getDate("dateFiled"));
-                
-                //More complicated objects
-                consentModel.setConsentStatusID(rs.getInt("consentStatusID"));
-                consentModel.setConsentStatus(rs.getString("consentStatus"));
-                if(Integer.parseInt(consentModel.getConsentStatus())==1){
-                    consentModel.setLegalGuardian(rs.getString("legalGuardian"));
-                    consentModel.setGuardianNumber(rs.getInt("guardianPhone"));
-                }else if(Integer.parseInt(consentModel.getConsentStatus())==2){
-                    consentModel.setDecisionMaker(rs.getString("decisionMaker"));
-                    consentModel.setDecisionNumber(rs.getInt("decisionPhone"));
-                    consentModel.setMedicalPOA("medicalPOA");
-                    consentModel.setMedicalNumber(rs.getInt("medicalNumber"));
-                }
-                model.setConsentStatus(consentModel);
-                
-                ps2 = con2.prepareStatement("SELECT * FROM allergies a WHERE a.admittanceID = ?");
-                ps2.setInt(1, admittanceID);
-                rs2 = ps2.executeQuery();
-                while(rs2.next()){
-                    allergies.add(rs.getString("allergyName"));
-                }
-                model.setAllergies(allergies);
-                
-                ps2 = con2.prepareStatement("SELECT * FROM emergency_contact ec WHERE ec.admittanceID = ?");
-                ps.setInt(1, admittanceID);
-                rs2 = ps2.executeQuery();
-                while(rs2.next()){
-                    contactModel.setFirstName(rs.getString("firstName"));
-                    contactModel.setLastName(rs.getString("lastName"));
-                    contactModel.setPrimaryPhoneNumber(rs.getInt("primaryPhoneNumber"));
-                    contactModel.setSecondaryPhoneNumber(rs.getInt("secondaryPhoneNumber"));
-                    contactModel.setRelationship(rs.getString("relationship"));
-                }
-                model.setEmergencyContact(contactModel);
                 
                 admittances.add(model);
             }

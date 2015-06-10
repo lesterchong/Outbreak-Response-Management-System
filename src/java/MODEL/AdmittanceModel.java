@@ -7,273 +7,142 @@
 package MODEL;
 
 import java.sql.Date;
-import java.util.LinkedList;
 
-/**
- *
- * @author Lester Chong
- */
+
 public class AdmittanceModel {
     private int admittanceID;
-    private String lastName;
-    private String firstName;
-    private String nickName;
-    private Date dateOfBirth;
-    private long socialSecurityNumber;
-    private long phoneNumber;
-    private String civilStatus;
-    private int age;
-    private int insuranceType;
-    private int insuranceNumber;
-    private String primaryDoctor;
-    private long doctorPhoneNumber;
-    private int dengueLevel;
-    private ConsentStatusModel consentStatus;
-    private int releaseInfo;
-    private String incidentReport;
+    private String patientFirstName;
+    private String patientLastName;
+    private int patientAge;
+    private Date patientBirthDate;
+    private long patientPhoneNumber;
+    private String patientCivilStatus;
+    private String patientAddress;
+    private String patientBarangay;
     private String incidentLocation;
-    private String address;
-    private LinkedList<String> allergies;
-    private EmergencyContactModel emergencyContact;
-    private String hospital;
+    private String incidentBarangay;
+    private String companionLastName;
+    private String companionFirstName;
+    private int companionAge;
+    private Date companionBirthDate;
+    private long companionPhoneNumber;
+    private String companionRelationship;
+    private String companionAddress;
+    private String companionBarangay;
     private Date dateFiled;
+    private String knownAllergies;
+    private int hospitalID;
 
     /**
-     * @return the admittanceID
+     * @return the patientFirstName
      */
-    public int getAdmittanceID() {
-        return admittanceID;
+    public String getPatientFirstName() {
+        return patientFirstName;
     }
 
     /**
-     * @param admittanceID the admittanceID to set
+     * @param patientFirstName the patientFirstName to set
      */
-    public void setAdmittanceID(int admittanceID) {
-        this.admittanceID = admittanceID;
+    public void setPatientFirstName(String patientFirstName) {
+        this.patientFirstName = patientFirstName;
     }
 
     /**
-     * @return the lastName
+     * @return the patientLastName
      */
-    public String getLastName() {
-        return lastName;
+    public String getPatientLastName() {
+        return patientLastName;
     }
 
     /**
-     * @param lastName the lastName to set
+     * @param patientLastName the patientLastName to set
      */
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
+    public void setPatientLastName(String patientLastName) {
+        this.patientLastName = patientLastName;
     }
 
     /**
-     * @return the firstName
+     * @return the patientAge
      */
-    public String getFirstName() {
-        return firstName;
+    public int getPatientAge() {
+        return patientAge;
     }
 
     /**
-     * @param firstName the firstName to set
+     * @param patientAge the patientAge to set
      */
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
+    public void setPatientAge(int patientAge) {
+        this.patientAge = patientAge;
     }
 
     /**
-     * @return the nickName
+     * @return the patientBirthDate
      */
-    public String getNickName() {
-        return nickName;
+    public Date getPatientBirthDate() {
+        return patientBirthDate;
     }
 
     /**
-     * @param nickName the nickName to set
+     * @param patientBirthDate the patientBirthDate to set
      */
-    public void setNickName(String nickName) {
-        this.nickName = nickName;
+    public void setPatientBirthDate(Date patientBirthDate) {
+        this.patientBirthDate = patientBirthDate;
     }
 
     /**
-     * @return the dateOfBirth
+     * @return the patientPhoneNumber
      */
-    public Date getDateOfBirth() {
-        return dateOfBirth;
+    public long getPatientPhoneNumber() {
+        return patientPhoneNumber;
     }
 
     /**
-     * @param dateOfBirth the dateOfBirth to set
+     * @param patientPhoneNumber the patientPhoneNumber to set
      */
-    public void setDateOfBirth(Date dateOfBirth) {
-        this.dateOfBirth = dateOfBirth;
+    public void setPatientPhoneNumber(long patientPhoneNumber) {
+        this.patientPhoneNumber = patientPhoneNumber;
     }
 
     /**
-     * @return the socialSecurityNumber
+     * @return the patientCivilStatus
      */
-    public long getSocialSecurityNumber() {
-        return socialSecurityNumber;
+    public String getPatientCivilStatus() {
+        return patientCivilStatus;
     }
 
     /**
-     * @param socialSecurityNumber the socialSecurityNumber to set
+     * @param patientCivilStatus the patientCivilStatus to set
      */
-    public void setSocialSecurityNumber(long socialSecurityNumber) {
-        this.socialSecurityNumber = socialSecurityNumber;
+    public void setPatientCivilStatus(String patientCivilStatus) {
+        this.patientCivilStatus = patientCivilStatus;
     }
 
     /**
-     * @return the phoneNumber
+     * @return the patientAddress
      */
-    public long getPhoneNumber() {
-        return phoneNumber;
+    public String getPatientAddress() {
+        return patientAddress;
     }
 
     /**
-     * @param phoneNumber the phoneNumber to set
+     * @param patientAddress the patientAddress to set
      */
-    public void setPhoneNumber(long phoneNumber) {
-        this.phoneNumber = phoneNumber;
+    public void setPatientAddress(String patientAddress) {
+        this.patientAddress = patientAddress;
     }
 
     /**
-     * @return the civilStatus
+     * @return the patientBarangay
      */
-    public String getCivilStatus() {
-        return civilStatus;
+    public String getPatientBarangay() {
+        return patientBarangay;
     }
 
     /**
-     * @param civilStatus the civilStatus to set
+     * @param patientBarangay the patientBarangay to set
      */
-    public void setCivilStatus(String civilStatus) {
-        this.civilStatus = civilStatus;
-    }
-
-    /**
-     * @return the age
-     */
-    public int getAge() {
-        return age;
-    }
-
-    /**
-     * @param age the age to set
-     */
-    public void setAge(int age) {
-        this.age = age;
-    }
-
-    /**
-     * @return the insuranceType
-     */
-    public int getInsuranceType() {
-        return insuranceType;
-    }
-
-    /**
-     * @param insuranceType the insuranceType to set
-     */
-    public void setInsuranceType(int insuranceType) {
-        this.insuranceType = insuranceType;
-    }
-
-    /**
-     * @return the insuranceNumber
-     */
-    public int getInsuranceNumber() {
-        return insuranceNumber;
-    }
-
-    /**
-     * @param insuranceNumber the insuranceNumber to set
-     */
-    public void setInsuranceNumber(int insuranceNumber) {
-        this.insuranceNumber = insuranceNumber;
-    }
-
-    /**
-     * @return the primaryDoctor
-     */
-    public String getPrimaryDoctor() {
-        return primaryDoctor;
-    }
-
-    /**
-     * @param primaryDoctor the primaryDoctor to set
-     */
-    public void setPrimaryDoctor(String primaryDoctor) {
-        this.primaryDoctor = primaryDoctor;
-    }
-
-    /**
-     * @return the doctorPhoneNumber
-     */
-    public long getDoctorPhoneNumber() {
-        return doctorPhoneNumber;
-    }
-
-    /**
-     * @param doctorPhoneNumber the doctorPhoneNumber to set
-     */
-    public void setDoctorPhoneNumber(long doctorPhoneNumber) {
-        this.doctorPhoneNumber = doctorPhoneNumber;
-    }
-
-    /**
-     * @return the dengueLevel
-     */
-    public int getDengueLevel() {
-        return dengueLevel;
-    }
-
-    /**
-     * @param dengueLevel the dengueLevel to set
-     */
-    public void setDengueLevel(int dengueLevel) {
-        this.dengueLevel = dengueLevel;
-    }
-
-    /**
-     * @return the consentStatus
-     */
-    public ConsentStatusModel getConsentStatus() {
-        return consentStatus;
-    }
-
-    /**
-     * @param consentStatus the consentStatus to set
-     */
-    public void setConsentStatus(ConsentStatusModel consentStatus) {
-        this.consentStatus = consentStatus;
-    }
-
-    /**
-     * @return the releaseInfo
-     */
-    public int getReleaseInfo() {
-        return releaseInfo;
-    }
-
-    /**
-     * @param releaseInfo the releaseInfo to set
-     */
-    public void setReleaseInfo(int releaseInfo) {
-        this.releaseInfo = releaseInfo;
-    }
-
-    /**
-     * @return the incidentReport
-     */
-    public String getIncidentReport() {
-        return incidentReport;
-    }
-
-    /**
-     * @param incidentReport the incidentReport to set
-     */
-    public void setIncidentReport(String incidentReport) {
-        this.incidentReport = incidentReport;
+    public void setPatientBarangay(String patientBarangay) {
+        this.patientBarangay = patientBarangay;
     }
 
     /**
@@ -291,59 +160,129 @@ public class AdmittanceModel {
     }
 
     /**
-     * @return the address
+     * @return the incidentBarangay
      */
-    public String getAddress() {
-        return address;
+    public String getIncidentBarangay() {
+        return incidentBarangay;
     }
 
     /**
-     * @param address the address to set
+     * @param incidentBarangay the incidentBarangay to set
      */
-    public void setAddress(String address) {
-        this.address = address;
+    public void setIncidentBarangay(String incidentBarangay) {
+        this.incidentBarangay = incidentBarangay;
     }
 
     /**
-     * @return the allergies
+     * @return the companionLastName
      */
-    public LinkedList<String> getAllergies() {
-        return allergies;
+    public String getCompanionLastName() {
+        return companionLastName;
     }
 
     /**
-     * @param allergies the allergies to set
+     * @param companionLastName the companionLastName to set
      */
-    public void setAllergies(LinkedList<String> allergies) {
-        this.allergies = allergies;
+    public void setCompanionLastName(String companionLastName) {
+        this.companionLastName = companionLastName;
     }
 
     /**
-     * @return the emergencyContact
+     * @return the companionFirstName
      */
-    public EmergencyContactModel getEmergencyContact() {
-        return emergencyContact;
+    public String getCompanionFirstName() {
+        return companionFirstName;
     }
 
     /**
-     * @param emergencyContact the emergencyContact to set
+     * @param companionFirstName the companionFirstName to set
      */
-    public void setEmergencyContact(EmergencyContactModel emergencyContact) {
-        this.emergencyContact = emergencyContact;
+    public void setCompanionFirstName(String companionFirstName) {
+        this.companionFirstName = companionFirstName;
     }
 
     /**
-     * @return the hospitalID
+     * @return the companionAge
      */
-    public String getHospital() {
-        return hospital;
+    public int getCompanionAge() {
+        return companionAge;
     }
 
     /**
-     * @param hospital the hospitalID to set
+     * @param companionAge the companionAge to set
      */
-    public void setHospital(String hospital) {
-        this.hospital = hospital;
+    public void setCompanionAge(int companionAge) {
+        this.companionAge = companionAge;
+    }
+
+    /**
+     * @return the companionBirthDate
+     */
+    public Date getCompanionBirthDate() {
+        return companionBirthDate;
+    }
+
+    /**
+     * @param companionBirthDate the companionBirthDate to set
+     */
+    public void setCompanionBirthDate(Date companionBirthDate) {
+        this.companionBirthDate = companionBirthDate;
+    }
+
+    /**
+     * @return the companionPhoneNumber
+     */
+    public long getCompanionPhoneNumber() {
+        return companionPhoneNumber;
+    }
+
+    /**
+     * @param companionPhoneNumber the companionPhoneNumber to set
+     */
+    public void setCompanionPhoneNumber(long companionPhoneNumber) {
+        this.companionPhoneNumber = companionPhoneNumber;
+    }
+
+    /**
+     * @return the companionRelationship
+     */
+    public String getCompanionRelationship() {
+        return companionRelationship;
+    }
+
+    /**
+     * @param companionRelationship the companionRelationship to set
+     */
+    public void setCompanionRelationship(String companionRelationship) {
+        this.companionRelationship = companionRelationship;
+    }
+
+    /**
+     * @return the companionAddress
+     */
+    public String getCompanionAddress() {
+        return companionAddress;
+    }
+
+    /**
+     * @param companionAddress the companionAddress to set
+     */
+    public void setCompanionAddress(String companionAddress) {
+        this.companionAddress = companionAddress;
+    }
+
+    /**
+     * @return the companionBarangay
+     */
+    public String getCompanionBarangay() {
+        return companionBarangay;
+    }
+
+    /**
+     * @param companionBarangay the companionBarangay to set
+     */
+    public void setCompanionBarangay(String companionBarangay) {
+        this.companionBarangay = companionBarangay;
     }
 
     /**
@@ -358,5 +297,47 @@ public class AdmittanceModel {
      */
     public void setDateFiled(Date dateFiled) {
         this.dateFiled = dateFiled;
+    }
+
+    /**
+     * @return the hospitalID
+     */
+    public int getHospitalID() {
+        return hospitalID;
+    }
+
+    /**
+     * @param hospitalID the hospitalID to set
+     */
+    public void setHospitalID(int hospitalID) {
+        this.hospitalID = hospitalID;
+    }
+
+    /**
+     * @return the knownAllergies
+     */
+    public String getKnownAllergies() {
+        return knownAllergies;
+    }
+
+    /**
+     * @param knownAllergies the knownAllergies to set
+     */
+    public void setKnownAllergies(String knownAllergies) {
+        this.knownAllergies = knownAllergies;
+    }    
+
+    /**
+     * @return the admittanceID
+     */
+    public int getAdmittanceID() {
+        return admittanceID;
+    }
+
+    /**
+     * @param admittanceID the admittanceID to set
+     */
+    public void setAdmittanceID(int admittanceID) {
+        this.admittanceID = admittanceID;
     }
 }
