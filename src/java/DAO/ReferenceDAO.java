@@ -96,4 +96,25 @@ public class ReferenceDAO {
         }
         return list;
     }
+    
+    public LinkedList<ReferenceModel> getRelationship(){
+        cf = new ConcreteConnection();
+        
+        try{
+            list = new LinkedList<>();
+            con = cf.getConnection();
+            ps = con.prepareStatement("SELECT * FROM ref_relationship");
+            rs = ps.executeQuery();
+            while(rs.next()){
+                model = new ReferenceModel();
+                model.setReferenceID(rs.getInt("relationshipID"));
+                model.setReferenceName(rs.getString("relationshipName"));
+                list.add(model);
+            }
+            con.close();
+        }catch(SQLException e){
+            
+        }
+        return list;
+    }
 }

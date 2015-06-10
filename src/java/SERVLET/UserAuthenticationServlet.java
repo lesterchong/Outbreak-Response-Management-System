@@ -38,7 +38,7 @@ public class UserAuthenticationServlet extends HttpServlet {
         try (PrintWriter out = response.getWriter()) {
             UserModel model = new UserModel();
             UserDAO dao = new UserDAO();
-            RequestDispatcher rd = getServletContext().getRequestDispatcher("/login.jsp");
+            RequestDispatcher rd = getServletContext().getRequestDispatcher("/index.html");
             
             model.setUsername(request.getParameter("username"));
             model.setPassword(request.getParameter("password"));
@@ -51,7 +51,7 @@ public class UserAuthenticationServlet extends HttpServlet {
                 sesh.setAttribute("hospitalID", model.getHospital());
                 sesh.setAttribute("isLogged", true);
                 out.printf("<script>alert(\"Successful Login\")</script>");
-                rd = getServletContext().getRequestDispatcher("/rome.jsp");
+                rd = getServletContext().getRequestDispatcher("/nurse-board2.html");
                 rd.include(request, response);
                 return;
             }else{
